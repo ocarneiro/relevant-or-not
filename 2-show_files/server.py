@@ -16,15 +16,18 @@ def index():
 @route('/front/<filename:path>')
 def server_static(filename='index.html'):
     global curpath
-    print(filename)
     return static_file(filename, root=curpath+'/front')
 
+@route('/img/<filename>')
+def server_static(filename):
+    global curpath
+    return static_file(filename, root=curpath+'/../work')
 
 @route('/template')
 @route('/template/<text>')
 @view('item')
 def hello(text='Wassup!'):
-    return {"text": text, "image": "not yet!"}
+    return {"text": text, "image": "032_la.png"}
 
 
 if __name__ == '__main__':
