@@ -4,6 +4,8 @@ from bottle import redirect
 import os
 import json
 from glob import glob
+from pathlib import Path
+
 
 CODEDIR = '2-show_files'
 curpath = '.'  # path where this file lives
@@ -24,8 +26,9 @@ def rt_flagged():
 
 @route('/meta/total')
 def rt_total():
-    number_of_files = 333
-    return str(number_of_files)
+    global all_items
+    number_of_items = len(all_items)
+    return str(number_of_items)
 
 @route('/meta/index')
 def rt_index():
@@ -46,14 +49,16 @@ def rt_flag(index):
 
 @route('/meta/text')
 def rt_text():
-    global cur_index
-    text = all_items[cur_index-1]
+    global cur_index, curpath
+    filename = all_items[cur_index-1]
+    text = Path(curpath+'/../work/' + filename + '.txt').read_text()
     # text = "This is an awesome hackerspace!!"
     return text
 
 @route('/meta/imgname')
 def rt_imgname():
-    image_name = "256_makerslocal_org.png"
+    global all_items, cur_index
+    image_name = all_items[cur_index-1] + ".png"
     return image_name
 
 
