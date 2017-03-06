@@ -3,8 +3,10 @@
   <link href="vendors/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-  <div class="col-md-12">Current item: <span id="index">0</span></div>
-  <div class="col-md-12">Total: <span id="total">?</span></div>
+  <div class="col-md-12">Current item: <span id="index">-1</span>
+                         File name: <span id="filename">?????</span>
+  </div>
+  <div class="col-md-12">Total: <span id="total">???</span></div>
   <div class="col-md-8" id="text">The text will appear here!!</div>
   <div class="col-md-4"><img id="image" width="600" height="400"></div>
   <div class="col-md-12">Items to be deleted: <span id="flagged">?</span></div>
@@ -12,7 +14,7 @@
   <script src="vendors/bootstrap.min.js"></script>
   <script>
       $( "#total" ).load( "../meta/total" );
-      var index = 0;
+      var index = -1;
       update();
       
       function update() {
@@ -20,6 +22,7 @@
           console.log(index);
           $.get( "../meta/index/" + index, function( data ) {
               $( "#text" ).load( "../meta/text" );
+              $( "#filename" ).load( "../meta/filename" );
               $( "#flagged" ).load( "../meta/flagged" );
               $.get( "../meta/imgname", function( data ) {
                   $("#image").attr("src", "../img/" + data);
@@ -30,13 +33,17 @@
       }
       
       $(document).keydown(function(e) {
+          // Left
           if(e.keyCode == 37) {
             console.log("Left");
+          // Right
           } else if (e.keyCode == 39) {
             update();
+          // Down or delete
           } else if (e.keyCode == 40 || e.keyCode == 46) {
               $.get( "../meta/flag/" + index, function( data ) {
                     console.log(data);
+                    update();
               });
           }
         });
